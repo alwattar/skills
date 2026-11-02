@@ -10,6 +10,11 @@
 
 # Skills For Real Engineers
 
+## Portable Agent Workflows (new additional pack)
+
+This fork also maintains an **independent, project-installable workflow pack** for coding agents: ticket intake (including pasted Jira tickets), routed engineering skills, security, privacy, marketing, SEO, analytics and release gates. The original upstream Matt Pocock skills below remain unchanged. See [the pack README](packs/agent-workflows/README.md) and [installer](scripts/install-agent-workflows.py).
+
+
 [![skills.sh](https://skills.sh/b/mattpocock/skills)](https://skills.sh/mattpocock/skills)
 
 My agent skills that I use every day to do real engineering - not vibe coding.

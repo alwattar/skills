@@ -1,0 +1,20 @@
+# Copy to consuming project as workflow.config.yaml; project-local rules take precedence.
+version: 1
+profile: universal
+default_workflow: workflow-router
+ticketing:
+  mode: local-pasted
+  directory: tickets
+  external_sync: false
+documentation:
+  language: en
+  docs_root: docs
+security:
+  require_explicit_approval_for_production_changes: true
+  disallow_reading_secrets_into_agent_context: true
+marketing:
+  paid_spend_requires_approval: true
+  tracking_requires_privacy_review: true
+verification:
+  require_evidence: true
+  no_fake_green_checks: true

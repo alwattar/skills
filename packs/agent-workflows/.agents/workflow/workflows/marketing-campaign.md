@@ -1,0 +1,3 @@
+# Marketing campaign workflow
+
+Follow the registered sequence, applying optional steps only when their conditions hold. No live advertising spend, tracking provider installation, publishing, or account mutations without authorized owner approval. Verify brand/product claims; protect consent/PII. Specify channels, campaign and landing page as separate entities. Measure qualified leads and revenue with proven provenance; do not invent conversion results. A planning-only request stops after producing the plan and handoff, without implementation.
