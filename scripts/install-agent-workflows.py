@@ -60,6 +60,9 @@ def main() -> int:
             conflicts.append(str(agents) + " (incomplete managed marker)")
         elif START in old and GUIDE not in old and not args.force:
             conflicts.append(str(agents) + " (edited managed section; --force required)")
+    for profile in ("CLAUDE.md", "GEMINI.md"):
+        if (target / profile).is_symlink():
+            conflicts.append(str(target / profile) + " (symlink)")
     if conflicts:
         print("Installation blocked by existing project files; no changes made:")
         for problem in conflicts:
@@ -97,6 +100,15 @@ def main() -> int:
             agents.write_text(new, encoding="utf-8")
     else:
         agents.write_text("# Project agent instructions\n\n" + GUIDE + "\n", encoding="utf-8")
+    for profile in ("CLAUDE.md", "GEMINI.md"):
+        profile_path = target / profile
+        note = "\n\n<!-- agent-workflows:profile -->\nRead AGENTS.md for reusable workflow routing and approvals.\n"
+        if profile_path.exists():
+            current = profile_path.read_text(encoding="utf-8")
+            if "<!-- agent-workflows:profile -->" not in current:
+                profile_path.write_text(current.rstrip() + note, encoding="utf-8")
+        else:
+            profile_path.write_text("# Project agent entrypoint\n" + note.lstrip(), encoding="utf-8")
     print("Installed agent workflows into " + str(target))
     print("Review workflow.config.yaml and AGENTS.md; ticket data stays in the project.")
     return 0

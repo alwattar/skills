@@ -12,7 +12,7 @@ From a checkout of this repository (until PR merge, use the feature branch):
 
 After merge you can clone the default branch without --branch.
 
-The installer copies the canonical ".agents/skills", ".agents/workflow" and ticket CLI into the **target project**, writes a default workflow.config.yaml and adds a marked routing section to its AGENTS.md. It refuses to overwrite changed files unless --force; --force saves backups under .agent-workflows-backup/. Review the diff and commit project-specific customizations deliberately. Do not commit backups or secrets. The default config is a template, not a policy waiver.
+The installer copies the canonical ".agents/skills", ".agents/workflow" and ticket CLI into the **target project**, writes a default workflow.config.yaml and adds a marked routing section to its AGENTS.md and lightweight pointers for CLAUDE.md/GEMINI.md. It refuses to overwrite changed files unless --force; --force saves backups under .agent-workflows-backup/. Review the diff and commit project-specific customizations deliberately. Do not commit backups or secrets. The default config is a template, not a policy waiver.
 
 **Do not use "npx skills add" alone to install this full pack.** That may install individual SKILL.md files but not the registry, tool and workflow resources required for cross-skill routing. Use the installer above for complete operation. The existing upstream skills.sh package remains available separately.
 

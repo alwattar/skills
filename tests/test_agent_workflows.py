@@ -72,6 +72,8 @@ class InstallerTests(unittest.TestCase):
             self.assertEqual(1, (root / "AGENTS.md").read_text().count("<!-- agent-workflows:start -->"))
             self.assertTrue((root / ".agents/skills/ticket-intake/SKILL.md").exists())
             self.assertTrue((root / "workflow.config.yaml").exists())
+            self.assertIn("Read AGENTS.md", (root / "CLAUDE.md").read_text())
+            self.assertIn("Read AGENTS.md", (root / "GEMINI.md").read_text())
 
     def test_existing_conflict_aborts_without_changes(self):
         with tempfile.TemporaryDirectory() as d:

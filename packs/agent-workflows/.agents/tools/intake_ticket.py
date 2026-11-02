@@ -146,6 +146,7 @@ def main() -> int:
             folder = Path(args.project_root).resolve() / "tickets"
             if not folder.is_dir():
                 raise ValueError("No tickets directory yet.")
+            check_safe_directory(folder)
             update_index(folder)
             print("refreshed: " + str(folder / "INDEX.md"))
             return 0
