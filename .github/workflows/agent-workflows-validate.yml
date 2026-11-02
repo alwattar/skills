@@ -1,0 +1,27 @@
+name: Portable Agent Workflows
+on:
+  pull_request:
+    paths:
+      - "packs/agent-workflows/**"
+      - "scripts/install-agent-workflows.py"
+      - "scripts/validate-agent-workflows.py"
+      - "tests/test_agent_workflows.py"
+      - ".github/workflows/agent-workflows-validate.yml"
+  push:
+    branches: ["feat/portable-agent-workflows"]
+    paths:
+      - "packs/agent-workflows/**"
+      - "scripts/**"
+      - "tests/test_agent_workflows.py"
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 scripts/validate-agent-workflows.py
+      - run: python3 -m unittest discover -s tests -p 'test_agent_workflows.py' -v
