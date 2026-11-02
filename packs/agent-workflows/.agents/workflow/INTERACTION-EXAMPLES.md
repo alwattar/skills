@@ -1,6 +1,6 @@
 # Interactive Decision Examples
 
-Use the owner's conversation language in live prompts; permanent artifacts remain English.
+Use the owner's conversation language in live prompts; agent-authored artifacts follow the consuming project's documented language policy (English by default), while pasted source ticket text stays verbatim.
 
 ## Single choice — initial deployment scope
 

@@ -32,7 +32,7 @@ This generates:
 
 Re-pasting an unchanged ticket is idempotent. Changed source text requires --update; the old version is archived under tickets/history/. The CLI does **not** contact Jira or move external ticket status; any API write needs an independently authorized connector.
 
-The ticket-execution workflow acts as a **dispatcher**: intake -> triage -> canonical selected workflow (bugfix, feature, security change, approved-spec implementation, etc.). Verification, code review and handoff are not skipped. Blocking approvals or unsafe content stop the risky portion, not safe unrelated exploration.
+Original ticket content remains verbatim in any language; generated notes follow the consuming project's documentation-language policy. The ticket-execution workflow acts as a **dispatcher**: intake -> triage -> canonical selected workflow (bugfix, feature, security change, approved-spec implementation, etc.). Verification, code review and handoff are not skipped. Blocking approvals or unsafe content stop the risky portion, not safe unrelated exploration.
 
 ## Coverage
 

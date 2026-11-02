@@ -24,7 +24,7 @@ Rules:
 
 Before creating or updating any repository engineering artifact, follow `.agents/workflow/rules/documentation-language.md`.
 
-Keep canonical documentation, specs, tickets, ADRs, plans, audits, and handoffs in English even when the conversation with the user is in another language.
+Default to English for agent-authored engineering artifacts unless the consuming project's approved language policy says otherwise. Always preserve pasted ticket source text verbatim, regardless of language.
 
 Do not apply this rule to localization files or explicitly requested translation artifacts.
 
