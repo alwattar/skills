@@ -1,188 +1,2122 @@
-workflows:
-  new-feature:
-    route: NEW_FEATURE
-    description: .agents/workflow/workflows/new-feature.md
-    sequence: [grill, "domain-modeling?", feature-design, "architecture-decision?", doc-impact, to-spec, "to-tickets?", implement, "security-audit?", "accessibility-audit?", "performance-audit?", verify, code-review, "decision-capture?", doc-sync, handoff]
-
-  bugfix:
-    route: BUGFIX
-    description: .agents/workflow/workflows/bugfix.md
-    sequence: [diagnose-bug, "tdd?", implement, "security-audit?", "accessibility-audit?", "performance-audit?", verify, code-review, "decision-capture?", "doc-sync?", handoff]
-
-  architecture-change:
-    route: ARCHITECTURE_CHANGE
-    description: .agents/workflow/workflows/architecture-change.md
-    sequence: [grill, architecture-decision, doc-impact, to-spec, "to-tickets?", implement, "security-audit?", "accessibility-audit?", "performance-audit?", verify, code-review, decision-capture, doc-sync, handoff]
-
-  new-project:
-    route: NEW_PROJECT
-    description: .agents/workflow/workflows/new-project.md
-    sequence: [project-bootstrap, project-discovery, "domain-modeling?", "architecture-decision?", to-spec, doc-impact, "to-tickets?", implement, "security-audit?", "accessibility-audit?", "performance-audit?", verify, code-review, "decision-capture?", doc-sync, handoff]
-
-  legacy-project:
-    route: LEGACY_ONBOARDING
-    description: .agents/workflow/workflows/legacy-project.md
-    sequence: [legacy-onboarding, project-audit, handoff]
-
-  review-only:
-    route: REVIEW_ONLY
-    description: .agents/workflow/workflows/review-only.md
-    sequence: [code-review]
-
-  project-audit:
-    route: PROJECT_AUDIT
-    description: .agents/workflow/workflows/existing-project.md
-    sequence: [project-audit, handoff]
-
-  refactor:
-    route: REFACTOR
-    description: .agents/workflow/workflows/refactor.md
-    sequence: ["architecture-decision?", "doc-impact?", implement, verify, code-review, "decision-capture?", "doc-sync?", handoff]
-
-  security-change:
-    route: SECURITY_CHANGE
-    description: .agents/workflow/workflows/security-change.md
-    sequence: [grill, "architecture-decision?", doc-impact, to-spec, implement, "threat-model?", "privacy-review?", "secrets-safety?", security-audit, verify, code-review, "decision-capture?", doc-sync, handoff]
-
-  docs-only:
-    route: DOCS_ONLY
-    description: .agents/workflow/workflows/docs-only.md
-    sequence: [doc-impact, doc-sync, verify, code-review, handoff]
-
-  implement-approved-spec:
-    route: IMPLEMENT_APPROVED_SPEC
-    description: .agents/workflow/workflows/implement-approved-spec.md
-    sequence: [doc-impact, "to-tickets?", implement, "security-audit?", "accessibility-audit?", "performance-audit?", verify, code-review, "decision-capture?", doc-sync, handoff]
-
-  large-initiative:
-    route: LARGE_INITIATIVE
-    description: .agents/workflow/workflows/large-initiative.md
-    sequence: ["project-discovery?", grill, map-initiative, "domain-modeling?", feature-design, "architecture-decision?", doc-impact, to-spec, to-tickets, implement, "security-audit?", "accessibility-audit?", "performance-audit?", verify, code-review, "decision-capture?", doc-sync, handoff]
-
-  ticket-execution:
-    route: TICKET_EXECUTION
-    description: .agents/workflow/workflows/ticket-execution.md
-    sequence: [ticket-intake, ticket-triage]
-
-  marketing-campaign:
-    route: MARKETING_CAMPAIGN
-    description: .agents/workflow/workflows/marketing-campaign.md
-    sequence: [marketing-strategy, campaign-planning, "content-marketing?", "landing-page-optimization?", "technical-seo?", "paid-media-review?", "privacy-review?", "analytics-attribution?", "crm-lifecycle?", "growth-experimentation?", "implement?", verify, code-review, handoff]
-
-  seo-review:
-    route: SEO_REVIEW
-    description: .agents/workflow/workflows/seo-review.md
-    sequence: [seo-guardian, technical-seo, "accessibility-audit?", "performance-audit?", verify, handoff]
-
-  security-audit:
-    route: SECURITY_AUDIT
-    description: .agents/workflow/workflows/security-audit.md
-    sequence: ["threat-model?", "secrets-safety?", "dependency-audit?", "privacy-review?", security-audit, verify, handoff]
-
-  release-review:
-    route: RELEASE_REVIEW
-    description: .agents/workflow/workflows/release-review.md
-    sequence: [release-readiness, "security-audit?", "privacy-review?", "performance-audit?", verify, handoff]
-
-conditions:
-  tdd:
-    run_when: [useful_deterministic_regression_seam]
-  project-discovery:
-    run_when: [product_purpose_or_scope_unclear]
-  doc-impact:
-    run_when: [permanent_project_truth_may_change]
-  to-tickets:
-    run_when:
-      - user_requested_ticketing
-      - task_size == large
-      - task_size == initiative
-      - independent_delivery_units > 1
-  domain-modeling:
-    run_when:
-      - domain_terms_or_entities_change
-  architecture-decision:
-    run_when:
-      - material_architecture_choice
-  decision-capture:
-    run_when:
-      - durable_decision_emerged
-  doc-sync:
-    run_when:
-      - permanent_project_truth_changed
-
-  implement:
-    run_when: [explicit_implementation_requested_and_authorized]
-  security-audit:
-    run_when: [security_risk_or_security_review_explicit]
-  threat-model:
-    run_when: [new_trust_boundary_or_critical_security_design]
-  secrets-safety:
-    run_when: [secrets_or_environment_credentials_affected]
-  dependency-audit:
-    run_when: [dependencies_or_supply_chain_affected]
-  privacy-review:
-    run_when: [personal_data_tracking_or_consent_affected]
-  technical-seo:
-    run_when: [public_indexable_landing_page_or_SEO_scope]
-  accessibility-audit:
-    run_when: [UI_interaction_or_accessibility_scope]
-  performance-audit:
-    run_when: [performance_budget_or_load_affected]
-  content-marketing:
-    run_when: [content_or_campaign_copy_needed]
-  landing-page-optimization:
-    run_when: [landing_page_in_scope]
-  paid-media-review:
-    run_when: [paid_media_campaign_or_account_changes]
-  analytics-attribution:
-    run_when: [tracking_or_lead_to_revenue_attribution_needed]
-  crm-lifecycle:
-    run_when: [lead_nurture_or_CRM_hand_off]
-  growth-experimentation:
-    run_when: [experiment_requested]
-
-skills:
-  workflow-router: {stage: routing, path: .agents/skills/workflow-router/SKILL.md}
-  project-bootstrap: {stage: discover, path: .agents/skills/project-bootstrap/SKILL.md}
-  project-discovery: {stage: discover, path: .agents/skills/project-discovery/SKILL.md}
-  grill: {stage: discover, path: .agents/skills/grill/SKILL.md}
-  domain-modeling: {stage: discover, path: .agents/skills/domain-modeling/SKILL.md}
-  legacy-onboarding: {stage: discover, path: .agents/skills/legacy-onboarding/SKILL.md}
-  feature-design: {stage: design, path: .agents/skills/feature-design/SKILL.md}
-  architecture-decision: {stage: design, path: .agents/skills/architecture-decision/SKILL.md}
-  doc-impact: {stage: design, path: .agents/skills/doc-impact/SKILL.md}
-  decision-capture: {stage: design, path: .agents/skills/decision-capture/SKILL.md}
-  to-spec: {stage: plan, path: .agents/skills/to-spec/SKILL.md}
-  to-tickets: {stage: plan, path: .agents/skills/to-tickets/SKILL.md}
-  map-initiative: {stage: plan, path: .agents/skills/map-initiative/SKILL.md}
-  implement: {stage: build, path: .agents/skills/implement/SKILL.md}
-  tdd: {stage: build, path: .agents/skills/tdd/SKILL.md}
-  diagnose-bug: {stage: build, path: .agents/skills/diagnose-bug/SKILL.md}
-  verify: {stage: verify, path: .agents/skills/verify/SKILL.md}
-  code-review: {stage: verify, path: .agents/skills/code-review/SKILL.md}
-  doc-sync: {stage: synchronize, path: .agents/skills/doc-sync/SKILL.md}
-  project-audit: {stage: synchronize, path: .agents/skills/project-audit/SKILL.md}
-  handoff: {stage: deliver, path: .agents/skills/handoff/SKILL.md}
-
-  ticket-intake: {stage: routing, path: .agents/skills/ticket-intake/SKILL.md}
-  ticket-triage: {stage: routing, path: .agents/skills/ticket-triage/SKILL.md}
-  api-contracts: {stage: design, path: .agents/skills/api-contracts/SKILL.md}
-  performance-audit: {stage: verify, path: .agents/skills/performance-audit/SKILL.md}
-  accessibility-audit: {stage: verify, path: .agents/skills/accessibility-audit/SKILL.md}
-  dependency-audit: {stage: verify, path: .agents/skills/dependency-audit/SKILL.md}
-  release-readiness: {stage: verify, path: .agents/skills/release-readiness/SKILL.md}
-  security-audit: {stage: verify, path: .agents/skills/security-audit/SKILL.md}
-  threat-model: {stage: design, path: .agents/skills/threat-model/SKILL.md}
-  secrets-safety: {stage: verify, path: .agents/skills/secrets-safety/SKILL.md}
-  privacy-review: {stage: design, path: .agents/skills/privacy-review/SKILL.md}
-  incident-response: {stage: deliver, path: .agents/skills/incident-response/SKILL.md}
-  marketing-strategy: {stage: discover, path: .agents/skills/marketing-strategy/SKILL.md}
-  campaign-planning: {stage: plan, path: .agents/skills/campaign-planning/SKILL.md}
-  landing-page-optimization: {stage: design, path: .agents/skills/landing-page-optimization/SKILL.md}
-  analytics-attribution: {stage: design, path: .agents/skills/analytics-attribution/SKILL.md}
-  technical-seo: {stage: verify, path: .agents/skills/technical-seo/SKILL.md}
-  content-marketing: {stage: plan, path: .agents/skills/content-marketing/SKILL.md}
-  growth-experimentation: {stage: plan, path: .agents/skills/growth-experimentation/SKILL.md}
-  paid-media-review: {stage: verify, path: .agents/skills/paid-media-review/SKILL.md}
-  crm-lifecycle: {stage: design, path: .agents/skills/crm-lifecycle/SKILL.md}
-  seo-guardian: {stage: verify, path: .agents/skills/seo-guardian/SKILL.md}
+{
+  "schema_version": 1,
+  "name": "Unified Agent Skills",
+  "skills": {
+    "accessibility-audit": {
+      "path": "skills/accessibility-audit/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Audit accessibility and interaction",
+      "summary_ar": "تدقيق قابلية الوصول والتفاعل",
+      "when_en": "When the task requires audit accessibility and interaction.",
+      "when_ar": "عندما تتطلب المهمة تدقيق قابلية الوصول والتفاعل.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for audit accessibility and interaction, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تدقيق قابلية الوصول والتفاعل مع أدلة وقرارات معلقة.",
+      "next": [
+        "performance-audit",
+        "verify"
+      ],
+      "workflows": [
+        "new-feature",
+        "bugfix",
+        "architecture-change",
+        "new-project",
+        "implement-approved-spec",
+        "large-initiative",
+        "seo-review"
+      ]
+    },
+    "analytics-attribution": {
+      "path": "skills/analytics-attribution/SKILL.md",
+      "stage": "design",
+      "summary_en": "Measure attribution across the customer journey",
+      "summary_ar": "قياس الإسناد عبر رحلة العميل",
+      "when_en": "When the task requires measure attribution across the customer journey.",
+      "when_ar": "عندما تتطلب المهمة قياس الإسناد عبر رحلة العميل.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for measure attribution across the customer journey, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص قياس الإسناد عبر رحلة العميل مع أدلة وقرارات معلقة.",
+      "next": [
+        "crm-lifecycle",
+        "growth-experimentation"
+      ],
+      "workflows": [
+        "marketing-campaign"
+      ]
+    },
+    "api-contracts": {
+      "path": "skills/api-contracts/SKILL.md",
+      "stage": "design",
+      "summary_en": "Review API interfaces and compatibility",
+      "summary_ar": "مراجعة عقود API والتوافق",
+      "when_en": "When the task requires review api interfaces and compatibility.",
+      "when_ar": "عندما تتطلب المهمة مراجعة عقود API والتوافق.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for review api interfaces and compatibility, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص مراجعة عقود API والتوافق مع أدلة وقرارات معلقة.",
+      "next": [],
+      "workflows": []
+    },
+    "architecture-decision": {
+      "path": "skills/architecture-decision/SKILL.md",
+      "stage": "design",
+      "summary_en": "Evaluate architecture alternatives and record decisions",
+      "summary_ar": "تقييم البدائل المعمارية وتوثيق القرارات",
+      "when_en": "When the task requires evaluate architecture alternatives and record decisions.",
+      "when_ar": "عندما تتطلب المهمة تقييم البدائل المعمارية وتوثيق القرارات.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for evaluate architecture alternatives and record decisions, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تقييم البدائل المعمارية وتوثيق القرارات مع أدلة وقرارات معلقة.",
+      "next": [
+        "review-design",
+        "resolve-findings",
+        "threat-model",
+        "doc-impact",
+        "implement",
+        "privacy-review"
+      ],
+      "workflows": [
+        "new-feature",
+        "architecture-change",
+        "new-project",
+        "refactor",
+        "security-change",
+        "large-initiative"
+      ]
+    },
+    "campaign-planning": {
+      "path": "skills/campaign-planning/SKILL.md",
+      "stage": "plan",
+      "summary_en": "Plan measurable marketing campaigns",
+      "summary_ar": "تخطيط حملات تسويقية قابلة للقياس",
+      "when_en": "When the task requires plan measurable marketing campaigns.",
+      "when_ar": "عندما تتطلب المهمة تخطيط حملات تسويقية قابلة للقياس.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for plan measurable marketing campaigns, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تخطيط حملات تسويقية قابلة للقياس مع أدلة وقرارات معلقة.",
+      "next": [
+        "content-marketing",
+        "landing-page-optimization"
+      ],
+      "workflows": [
+        "marketing-campaign"
+      ]
+    },
+    "choose-workflow": {
+      "path": "skills/choose-workflow/SKILL.md",
+      "stage": "routing",
+      "summary_en": "Help select the right skill or workflow",
+      "summary_ar": "المساعدة في اختيار المهارة أو المسار المناسب",
+      "when_en": "When the task requires help select the right skill or workflow.",
+      "when_ar": "عندما تتطلب المهمة المساعدة في اختيار المهارة أو المسار المناسب.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for help select the right skill or workflow, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص المساعدة في اختيار المهارة أو المسار المناسب مع أدلة وقرارات معلقة.",
+      "next": [
+        "workflow-router",
+        "project-discovery"
+      ],
+      "workflows": []
+    },
+    "code-review": {
+      "path": "skills/code-review/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Review implementation correctness and maintainability",
+      "summary_ar": "مراجعة صحة التنفيذ وقابليته للصيانة",
+      "when_en": "When the task requires review implementation correctness and maintainability.",
+      "when_ar": "عندما تتطلب المهمة مراجعة صحة التنفيذ وقابليته للصيانة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for review implementation correctness and maintainability, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص مراجعة صحة التنفيذ وقابليته للصيانة مع أدلة وقرارات معلقة.",
+      "next": [
+        "detect-drift",
+        "decision-capture",
+        "doc-sync",
+        "handoff"
+      ],
+      "workflows": [
+        "new-feature",
+        "bugfix",
+        "architecture-change",
+        "new-project",
+        "review-only",
+        "refactor",
+        "security-change",
+        "docs-only",
+        "implement-approved-spec",
+        "large-initiative",
+        "marketing-campaign"
+      ]
+    },
+    "codebase-design": {
+      "path": "skills/codebase-design/SKILL.md",
+      "stage": "design",
+      "summary_en": "Design cohesive modules and interfaces",
+      "summary_ar": "تصميم وحدات وواجهات متماسكة",
+      "when_en": "When the task requires design cohesive modules and interfaces.",
+      "when_ar": "عندما تتطلب المهمة تصميم وحدات وواجهات متماسكة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for design cohesive modules and interfaces, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تصميم وحدات وواجهات متماسكة مع أدلة وقرارات معلقة.",
+      "next": [
+        "architecture-decision",
+        "feature-design"
+      ],
+      "workflows": []
+    },
+    "configure-project": {
+      "path": "skills/configure-project/SKILL.md",
+      "stage": "discover",
+      "summary_en": "Configure project-specific workflow policies",
+      "summary_ar": "تهيئة سياسات العمل الخاصة بالمشروع",
+      "when_en": "When the task requires configure project-specific workflow policies.",
+      "when_ar": "عندما تتطلب المهمة تهيئة سياسات العمل الخاصة بالمشروع.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for configure project-specific workflow policies, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تهيئة سياسات العمل الخاصة بالمشروع مع أدلة وقرارات معلقة.",
+      "next": [
+        "project-bootstrap",
+        "workflow-router"
+      ],
+      "workflows": []
+    },
+    "content-marketing": {
+      "path": "skills/content-marketing/SKILL.md",
+      "stage": "plan",
+      "summary_en": "Plan reliable content marketing",
+      "summary_ar": "تخطيط التسويق بالمحتوى الموثوق",
+      "when_en": "When the task requires plan reliable content marketing.",
+      "when_ar": "عندما تتطلب المهمة تخطيط التسويق بالمحتوى الموثوق.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for plan reliable content marketing, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تخطيط التسويق بالمحتوى الموثوق مع أدلة وقرارات معلقة.",
+      "next": [
+        "landing-page-optimization",
+        "technical-seo"
+      ],
+      "workflows": [
+        "marketing-campaign"
+      ]
+    },
+    "crm-lifecycle": {
+      "path": "skills/crm-lifecycle/SKILL.md",
+      "stage": "design",
+      "summary_en": "Design lead and customer lifecycle journeys",
+      "summary_ar": "تصميم دورة العملاء المحتملين والعملاء",
+      "when_en": "When the task requires design lead and customer lifecycle journeys.",
+      "when_ar": "عندما تتطلب المهمة تصميم دورة العملاء المحتملين والعملاء.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for design lead and customer lifecycle journeys, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تصميم دورة العملاء المحتملين والعملاء مع أدلة وقرارات معلقة.",
+      "next": [
+        "growth-experimentation",
+        "implement"
+      ],
+      "workflows": [
+        "marketing-campaign"
+      ]
+    },
+    "decision-capture": {
+      "path": "skills/decision-capture/SKILL.md",
+      "stage": "design",
+      "summary_en": "Capture long-lived decisions",
+      "summary_ar": "تسجيل القرارات طويلة الأمد",
+      "when_en": "When the task requires capture long-lived decisions.",
+      "when_ar": "عندما تتطلب المهمة تسجيل القرارات طويلة الأمد.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for capture long-lived decisions, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تسجيل القرارات طويلة الأمد مع أدلة وقرارات معلقة.",
+      "next": [
+        "doc-sync",
+        "handoff"
+      ],
+      "workflows": [
+        "new-feature",
+        "bugfix",
+        "architecture-change",
+        "new-project",
+        "refactor",
+        "security-change",
+        "implement-approved-spec",
+        "large-initiative"
+      ]
+    },
+    "dependency-audit": {
+      "path": "skills/dependency-audit/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Audit dependencies and supply-chain risk",
+      "summary_ar": "تدقيق الاعتماديات ومخاطر سلسلة التوريد",
+      "when_en": "When the task requires audit dependencies and supply-chain risk.",
+      "when_ar": "عندما تتطلب المهمة تدقيق الاعتماديات ومخاطر سلسلة التوريد.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for audit dependencies and supply-chain risk, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تدقيق الاعتماديات ومخاطر سلسلة التوريد مع أدلة وقرارات معلقة.",
+      "next": [
+        "privacy-review",
+        "security-audit"
+      ],
+      "workflows": [
+        "security-audit"
+      ]
+    },
+    "detect-drift": {
+      "path": "skills/detect-drift/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Compare implemented code with approved design",
+      "summary_ar": "مقارنة الكود المنفذ بالتصميم المعتمد",
+      "when_en": "When the task requires compare implemented code with approved design.",
+      "when_ar": "عندما تتطلب المهمة مقارنة الكود المنفذ بالتصميم المعتمد.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for compare implemented code with approved design, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص مقارنة الكود المنفذ بالتصميم المعتمد مع أدلة وقرارات معلقة.",
+      "next": [
+        "doc-sync",
+        "architecture-decision",
+        "decision-capture"
+      ],
+      "workflows": [
+        "new-feature",
+        "architecture-change",
+        "large-initiative"
+      ]
+    },
+    "diagnose-bug": {
+      "path": "skills/diagnose-bug/SKILL.md",
+      "stage": "build",
+      "summary_en": "Reproduce and diagnose bugs",
+      "summary_ar": "إعادة إنتاج الأخطاء وتشخيصها",
+      "when_en": "When the task requires reproduce and diagnose bugs.",
+      "when_ar": "عندما تتطلب المهمة إعادة إنتاج الأخطاء وتشخيصها.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for reproduce and diagnose bugs, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص إعادة إنتاج الأخطاء وتشخيصها مع أدلة وقرارات معلقة.",
+      "next": [
+        "tdd",
+        "implement"
+      ],
+      "workflows": [
+        "bugfix"
+      ]
+    },
+    "doc-impact": {
+      "path": "skills/doc-impact/SKILL.md",
+      "stage": "design",
+      "summary_en": "Evaluate documentation impact",
+      "summary_ar": "تقييم أثر التغيير على الوثائق",
+      "when_en": "When the task requires evaluate documentation impact.",
+      "when_ar": "عندما تتطلب المهمة تقييم أثر التغيير على الوثائق.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for evaluate documentation impact, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تقييم أثر التغيير على الوثائق مع أدلة وقرارات معلقة.",
+      "next": [
+        "to-spec",
+        "to-tickets",
+        "implement",
+        "verify",
+        "doc-sync"
+      ],
+      "workflows": [
+        "new-feature",
+        "architecture-change",
+        "new-project",
+        "refactor",
+        "security-change",
+        "docs-only",
+        "implement-approved-spec",
+        "large-initiative"
+      ]
+    },
+    "doc-sync": {
+      "path": "skills/doc-sync/SKILL.md",
+      "stage": "synchronize",
+      "summary_en": "Synchronize documentation with verified behavior",
+      "summary_ar": "مزامنة الوثائق مع السلوك المثبت",
+      "when_en": "When the task requires synchronize documentation with verified behavior.",
+      "when_ar": "عندما تتطلب المهمة مزامنة الوثائق مع السلوك المثبت.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for synchronize documentation with verified behavior, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص مزامنة الوثائق مع السلوك المثبت مع أدلة وقرارات معلقة.",
+      "next": [
+        "handoff",
+        "verify",
+        "code-review"
+      ],
+      "workflows": [
+        "new-feature",
+        "bugfix",
+        "architecture-change",
+        "new-project",
+        "refactor",
+        "security-change",
+        "docs-only",
+        "implement-approved-spec",
+        "large-initiative"
+      ]
+    },
+    "domain-modeling": {
+      "path": "skills/domain-modeling/SKILL.md",
+      "stage": "discover",
+      "summary_en": "Model domain concepts and rules",
+      "summary_ar": "نمذجة مفاهيم المجال وقواعده",
+      "when_en": "When the task requires model domain concepts and rules.",
+      "when_ar": "عندما تتطلب المهمة نمذجة مفاهيم المجال وقواعده.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for model domain concepts and rules, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص نمذجة مفاهيم المجال وقواعده مع أدلة وقرارات معلقة.",
+      "next": [
+        "feature-design",
+        "architecture-decision",
+        "review-design"
+      ],
+      "workflows": [
+        "new-feature",
+        "new-project",
+        "large-initiative"
+      ]
+    },
+    "edit-article": {
+      "path": "skills/edit-article/SKILL.md",
+      "stage": "deliver",
+      "summary_en": "Improve writing while preserving meaning",
+      "summary_ar": "تحسين المقالات مع الحفاظ على المعنى",
+      "when_en": "When the task requires improve writing while preserving meaning.",
+      "when_ar": "عندما تتطلب المهمة تحسين المقالات مع الحفاظ على المعنى.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for improve writing while preserving meaning, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تحسين المقالات مع الحفاظ على المعنى مع أدلة وقرارات معلقة.",
+      "next": [
+        "verify",
+        "handoff"
+      ],
+      "workflows": []
+    },
+    "feature-design": {
+      "path": "skills/feature-design/SKILL.md",
+      "stage": "design",
+      "summary_en": "Design product and system features",
+      "summary_ar": "تصميم ميزات المنتج والنظام",
+      "when_en": "When the task requires design product and system features.",
+      "when_ar": "عندما تتطلب المهمة تصميم ميزات المنتج والنظام.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for design product and system features, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تصميم ميزات المنتج والنظام مع أدلة وقرارات معلقة.",
+      "next": [
+        "architecture-decision",
+        "review-design"
+      ],
+      "workflows": [
+        "new-feature",
+        "large-initiative"
+      ]
+    },
+    "grill": {
+      "path": "skills/grill/SKILL.md",
+      "stage": "discover",
+      "summary_en": "Resolve ambiguity through focused questions",
+      "summary_ar": "حل الغموض عبر أسئلة مركزة",
+      "when_en": "When the task requires resolve ambiguity through focused questions.",
+      "when_ar": "عندما تتطلب المهمة حل الغموض عبر أسئلة مركزة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for resolve ambiguity through focused questions, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص حل الغموض عبر أسئلة مركزة مع أدلة وقرارات معلقة.",
+      "next": [
+        "domain-modeling",
+        "feature-design",
+        "architecture-decision",
+        "threat-model",
+        "map-initiative"
+      ],
+      "workflows": [
+        "new-feature",
+        "architecture-change",
+        "security-change",
+        "large-initiative"
+      ]
+    },
+    "growth-experimentation": {
+      "path": "skills/growth-experimentation/SKILL.md",
+      "stage": "plan",
+      "summary_en": "Design measurable growth experiments",
+      "summary_ar": "تصميم تجارب نمو قابلة للقياس",
+      "when_en": "When the task requires design measurable growth experiments.",
+      "when_ar": "عندما تتطلب المهمة تصميم تجارب نمو قابلة للقياس.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for design measurable growth experiments, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تصميم تجارب نمو قابلة للقياس مع أدلة وقرارات معلقة.",
+      "next": [
+        "implement",
+        "verify"
+      ],
+      "workflows": [
+        "marketing-campaign"
+      ]
+    },
+    "handoff": {
+      "path": "skills/handoff/SKILL.md",
+      "stage": "deliver",
+      "summary_en": "Document evidence and next actions",
+      "summary_ar": "توثيق الأدلة والخطوات التالية",
+      "when_en": "When the task requires document evidence and next actions.",
+      "when_ar": "عندما تتطلب المهمة توثيق الأدلة والخطوات التالية.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for document evidence and next actions, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص توثيق الأدلة والخطوات التالية مع أدلة وقرارات معلقة.",
+      "next": [],
+      "workflows": [
+        "new-feature",
+        "bugfix",
+        "architecture-change",
+        "new-project",
+        "legacy-project",
+        "project-audit",
+        "refactor",
+        "security-change",
+        "docs-only",
+        "implement-approved-spec",
+        "large-initiative",
+        "marketing-campaign",
+        "seo-review",
+        "security-audit",
+        "release-review"
+      ]
+    },
+    "implement": {
+      "path": "skills/implement/SKILL.md",
+      "stage": "build",
+      "summary_en": "Implement approved changes",
+      "summary_ar": "تنفيذ التغييرات المعتمدة",
+      "when_en": "When the task requires implement approved changes.",
+      "when_ar": "عندما تتطلب المهمة تنفيذ التغييرات المعتمدة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for implement approved changes, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تنفيذ التغييرات المعتمدة مع أدلة وقرارات معلقة.",
+      "next": [
+        "security-audit",
+        "accessibility-audit",
+        "verify",
+        "code-review"
+      ],
+      "workflows": [
+        "new-feature",
+        "bugfix",
+        "architecture-change",
+        "new-project",
+        "refactor",
+        "security-change",
+        "implement-approved-spec",
+        "large-initiative",
+        "marketing-campaign"
+      ]
+    },
+    "improve-codebase-architecture": {
+      "path": "skills/improve-codebase-architecture/SKILL.md",
+      "stage": "design",
+      "summary_en": "Discover improvements to existing architecture",
+      "summary_ar": "اكتشاف تحسينات البنية المعمارية القائمة",
+      "when_en": "When the task requires discover improvements to existing architecture.",
+      "when_ar": "عندما تتطلب المهمة اكتشاف تحسينات البنية المعمارية القائمة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for discover improvements to existing architecture, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص اكتشاف تحسينات البنية المعمارية القائمة مع أدلة وقرارات معلقة.",
+      "next": [
+        "architecture-decision",
+        "to-spec"
+      ],
+      "workflows": []
+    },
+    "incident-response": {
+      "path": "skills/incident-response/SKILL.md",
+      "stage": "deliver",
+      "summary_en": "Organize incident response safely",
+      "summary_ar": "تنظيم الاستجابة الآمنة للحوادث",
+      "when_en": "When the task requires organize incident response safely.",
+      "when_ar": "عندما تتطلب المهمة تنظيم الاستجابة الآمنة للحوادث.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for organize incident response safely, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تنظيم الاستجابة الآمنة للحوادث مع أدلة وقرارات معلقة.",
+      "next": [],
+      "workflows": []
+    },
+    "landing-page-optimization": {
+      "path": "skills/landing-page-optimization/SKILL.md",
+      "stage": "design",
+      "summary_en": "Improve landing page outcomes",
+      "summary_ar": "تحسين نتائج صفحات الهبوط",
+      "when_en": "When the task requires improve landing page outcomes.",
+      "when_ar": "عندما تتطلب المهمة تحسين نتائج صفحات الهبوط.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for improve landing page outcomes, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تحسين نتائج صفحات الهبوط مع أدلة وقرارات معلقة.",
+      "next": [
+        "technical-seo",
+        "paid-media-review"
+      ],
+      "workflows": [
+        "marketing-campaign"
+      ]
+    },
+    "legacy-onboarding": {
+      "path": "skills/legacy-onboarding/SKILL.md",
+      "stage": "discover",
+      "summary_en": "Understand legacy codebases",
+      "summary_ar": "فهم قواعد الكود القديمة",
+      "when_en": "When the task requires understand legacy codebases.",
+      "when_ar": "عندما تتطلب المهمة فهم قواعد الكود القديمة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for understand legacy codebases, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص فهم قواعد الكود القديمة مع أدلة وقرارات معلقة.",
+      "next": [
+        "project-audit",
+        "handoff"
+      ],
+      "workflows": [
+        "legacy-project"
+      ]
+    },
+    "map-initiative": {
+      "path": "skills/map-initiative/SKILL.md",
+      "stage": "plan",
+      "summary_en": "Break initiatives into delivery slices",
+      "summary_ar": "تقسيم المبادرات إلى مراحل تنفيذ",
+      "when_en": "When the task requires break initiatives into delivery slices.",
+      "when_ar": "عندما تتطلب المهمة تقسيم المبادرات إلى مراحل تنفيذ.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for break initiatives into delivery slices, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تقسيم المبادرات إلى مراحل تنفيذ مع أدلة وقرارات معلقة.",
+      "next": [
+        "domain-modeling",
+        "feature-design"
+      ],
+      "workflows": [
+        "large-initiative"
+      ]
+    },
+    "marketing-strategy": {
+      "path": "skills/marketing-strategy/SKILL.md",
+      "stage": "discover",
+      "summary_en": "Define marketing goals and positioning",
+      "summary_ar": "تحديد أهداف التسويق والتموضع",
+      "when_en": "When the task requires define marketing goals and positioning.",
+      "when_ar": "عندما تتطلب المهمة تحديد أهداف التسويق والتموضع.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for define marketing goals and positioning, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تحديد أهداف التسويق والتموضع مع أدلة وقرارات معلقة.",
+      "next": [
+        "campaign-planning",
+        "content-marketing"
+      ],
+      "workflows": [
+        "marketing-campaign"
+      ]
+    },
+    "migrate-to-shoehorn": {
+      "path": "skills/migrate-to-shoehorn/SKILL.md",
+      "stage": "build",
+      "summary_en": "Migrate fixtures to typed test helpers",
+      "summary_ar": "ترحيل تجهيزات الاختبارات إلى أدوات ذات أنواع",
+      "when_en": "When the task requires migrate fixtures to typed test helpers.",
+      "when_ar": "عندما تتطلب المهمة ترحيل تجهيزات الاختبارات إلى أدوات ذات أنواع.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for migrate fixtures to typed test helpers, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص ترحيل تجهيزات الاختبارات إلى أدوات ذات أنواع مع أدلة وقرارات معلقة.",
+      "next": [
+        "tdd",
+        "verify"
+      ],
+      "workflows": []
+    },
+    "obsidian-vault": {
+      "path": "skills/obsidian-vault/SKILL.md",
+      "stage": "synchronize",
+      "summary_en": "Maintain an Obsidian knowledge vault",
+      "summary_ar": "صيانة قاعدة المعرفة في Obsidian",
+      "when_en": "When the task requires maintain an obsidian knowledge vault.",
+      "when_ar": "عندما تتطلب المهمة صيانة قاعدة المعرفة في Obsidian.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for maintain an obsidian knowledge vault, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص صيانة قاعدة المعرفة في Obsidian مع أدلة وقرارات معلقة.",
+      "next": [
+        "doc-sync",
+        "verify"
+      ],
+      "workflows": []
+    },
+    "paid-media-review": {
+      "path": "skills/paid-media-review/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Evaluate paid media performance",
+      "summary_ar": "تقييم أداء الإعلانات المدفوعة",
+      "when_en": "When the task requires evaluate paid media performance.",
+      "when_ar": "عندما تتطلب المهمة تقييم أداء الإعلانات المدفوعة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for evaluate paid media performance, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تقييم أداء الإعلانات المدفوعة مع أدلة وقرارات معلقة.",
+      "next": [
+        "privacy-review",
+        "analytics-attribution"
+      ],
+      "workflows": [
+        "marketing-campaign"
+      ]
+    },
+    "performance-audit": {
+      "path": "skills/performance-audit/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Audit performance against evidence",
+      "summary_ar": "تدقيق الأداء استناداً للأدلة",
+      "when_en": "When the task requires audit performance against evidence.",
+      "when_ar": "عندما تتطلب المهمة تدقيق الأداء استناداً للأدلة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for audit performance against evidence, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تدقيق الأداء استناداً للأدلة مع أدلة وقرارات معلقة.",
+      "next": [
+        "verify",
+        "code-review",
+        "handoff"
+      ],
+      "workflows": [
+        "new-feature",
+        "bugfix",
+        "architecture-change",
+        "new-project",
+        "implement-approved-spec",
+        "large-initiative",
+        "seo-review",
+        "release-review"
+      ]
+    },
+    "privacy-review": {
+      "path": "skills/privacy-review/SKILL.md",
+      "stage": "design",
+      "summary_en": "Review data privacy and consent",
+      "summary_ar": "مراجعة الخصوصية والموافقات",
+      "when_en": "When the task requires review data privacy and consent.",
+      "when_ar": "عندما تتطلب المهمة مراجعة الخصوصية والموافقات.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for review data privacy and consent, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص مراجعة الخصوصية والموافقات مع أدلة وقرارات معلقة.",
+      "next": [
+        "secrets-safety",
+        "review-design",
+        "analytics-attribution",
+        "crm-lifecycle",
+        "security-audit",
+        "verify"
+      ],
+      "workflows": [
+        "security-change",
+        "marketing-campaign",
+        "security-audit",
+        "release-review"
+      ]
+    },
+    "project-audit": {
+      "path": "skills/project-audit/SKILL.md",
+      "stage": "synchronize",
+      "summary_en": "Audit project health and gaps",
+      "summary_ar": "تدقيق صحة المشروع والفجوات",
+      "when_en": "When the task requires audit project health and gaps.",
+      "when_ar": "عندما تتطلب المهمة تدقيق صحة المشروع والفجوات.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for audit project health and gaps, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تدقيق صحة المشروع والفجوات مع أدلة وقرارات معلقة.",
+      "next": [
+        "handoff"
+      ],
+      "workflows": [
+        "legacy-project",
+        "project-audit"
+      ]
+    },
+    "project-bootstrap": {
+      "path": "skills/project-bootstrap/SKILL.md",
+      "stage": "discover",
+      "summary_en": "Initialize workflows in a project",
+      "summary_ar": "تهيئة مسارات العمل في المشروع",
+      "when_en": "When the task requires initialize workflows in a project.",
+      "when_ar": "عندما تتطلب المهمة تهيئة مسارات العمل في المشروع.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for initialize workflows in a project, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تهيئة مسارات العمل في المشروع مع أدلة وقرارات معلقة.",
+      "next": [
+        "project-discovery",
+        "domain-modeling"
+      ],
+      "workflows": [
+        "new-project"
+      ]
+    },
+    "project-discovery": {
+      "path": "skills/project-discovery/SKILL.md",
+      "stage": "discover",
+      "summary_en": "Discover product scope and users",
+      "summary_ar": "استكشاف نطاق المنتج ومستخدميه",
+      "when_en": "When the task requires discover product scope and users.",
+      "when_ar": "عندما تتطلب المهمة استكشاف نطاق المنتج ومستخدميه.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for discover product scope and users, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص استكشاف نطاق المنتج ومستخدميه مع أدلة وقرارات معلقة.",
+      "next": [
+        "domain-modeling",
+        "architecture-decision",
+        "grill",
+        "map-initiative"
+      ],
+      "workflows": [
+        "new-project",
+        "large-initiative"
+      ]
+    },
+    "prototype": {
+      "path": "skills/prototype/SKILL.md",
+      "stage": "design",
+      "summary_en": "Build disposable prototypes to test ideas",
+      "summary_ar": "بناء نماذج أولية لاختبار الأفكار",
+      "when_en": "When the task requires build disposable prototypes to test ideas.",
+      "when_ar": "عندما تتطلب المهمة بناء نماذج أولية لاختبار الأفكار.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for build disposable prototypes to test ideas, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص بناء نماذج أولية لاختبار الأفكار مع أدلة وقرارات معلقة.",
+      "next": [
+        "feature-design",
+        "to-spec"
+      ],
+      "workflows": []
+    },
+    "release-readiness": {
+      "path": "skills/release-readiness/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Check release requirements and risks",
+      "summary_ar": "فحص متطلبات الإصدار ومخاطره",
+      "when_en": "When the task requires check release requirements and risks.",
+      "when_ar": "عندما تتطلب المهمة فحص متطلبات الإصدار ومخاطره.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for check release requirements and risks, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص فحص متطلبات الإصدار ومخاطره مع أدلة وقرارات معلقة.",
+      "next": [
+        "security-audit",
+        "privacy-review"
+      ],
+      "workflows": [
+        "release-review"
+      ]
+    },
+    "resolve-findings": {
+      "path": "skills/resolve-findings/SKILL.md",
+      "stage": "design",
+      "summary_en": "Reconcile and document design findings",
+      "summary_ar": "معالجة وتوثيق ملاحظات التصميم",
+      "when_en": "When the task requires reconcile and document design findings.",
+      "when_ar": "عندما تتطلب المهمة معالجة وتوثيق ملاحظات التصميم.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for reconcile and document design findings, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص معالجة وتوثيق ملاحظات التصميم مع أدلة وقرارات معلقة.",
+      "next": [
+        "architecture-decision",
+        "to-spec",
+        "doc-impact"
+      ],
+      "workflows": [
+        "new-feature",
+        "architecture-change",
+        "new-project",
+        "security-change",
+        "large-initiative"
+      ]
+    },
+    "resolving-merge-conflicts": {
+      "path": "skills/resolving-merge-conflicts/SKILL.md",
+      "stage": "build",
+      "summary_en": "Resolve Git merge conflicts safely",
+      "summary_ar": "حل تعارضات الدمج بأمان",
+      "when_en": "When the task requires resolve git merge conflicts safely.",
+      "when_ar": "عندما تتطلب المهمة حل تعارضات الدمج بأمان.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for resolve git merge conflicts safely, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص حل تعارضات الدمج بأمان مع أدلة وقرارات معلقة.",
+      "next": [
+        "verify",
+        "code-review"
+      ],
+      "workflows": []
+    },
+    "review-design": {
+      "path": "skills/review-design/SKILL.md",
+      "stage": "design",
+      "summary_en": "Review design through independent critical perspectives",
+      "summary_ar": "مراجعة التصميم من زوايا نقدية مستقلة",
+      "when_en": "When the task requires review design through independent critical perspectives.",
+      "when_ar": "عندما تتطلب المهمة مراجعة التصميم من زوايا نقدية مستقلة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for review design through independent critical perspectives, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص مراجعة التصميم من زوايا نقدية مستقلة مع أدلة وقرارات معلقة.",
+      "next": [
+        "resolve-findings",
+        "to-spec",
+        "doc-impact"
+      ],
+      "workflows": [
+        "new-feature",
+        "architecture-change",
+        "new-project",
+        "security-change",
+        "large-initiative"
+      ]
+    },
+    "scaffold-exercises": {
+      "path": "skills/scaffold-exercises/SKILL.md",
+      "stage": "deliver",
+      "summary_en": "Create programming exercises",
+      "summary_ar": "إنشاء تمارين برمجية",
+      "when_en": "When the task requires create programming exercises.",
+      "when_ar": "عندما تتطلب المهمة إنشاء تمارين برمجية.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for create programming exercises, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص إنشاء تمارين برمجية مع أدلة وقرارات معلقة.",
+      "next": [
+        "teach",
+        "verify"
+      ],
+      "workflows": []
+    },
+    "secrets-safety": {
+      "path": "skills/secrets-safety/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Protect credentials and sensitive values",
+      "summary_ar": "حماية الاعتمادات والقيم الحساسة",
+      "when_en": "When the task requires protect credentials and sensitive values.",
+      "when_ar": "عندما تتطلب المهمة حماية الاعتمادات والقيم الحساسة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for protect credentials and sensitive values, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص حماية الاعتمادات والقيم الحساسة مع أدلة وقرارات معلقة.",
+      "next": [
+        "review-design",
+        "resolve-findings",
+        "dependency-audit",
+        "privacy-review"
+      ],
+      "workflows": [
+        "security-change",
+        "security-audit"
+      ]
+    },
+    "security-audit": {
+      "path": "skills/security-audit/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Audit security evidence and controls",
+      "summary_ar": "تدقيق الأدلة والضوابط الأمنية",
+      "when_en": "When the task requires audit security evidence and controls.",
+      "when_ar": "عندما تتطلب المهمة تدقيق الأدلة والضوابط الأمنية.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for audit security evidence and controls, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تدقيق الأدلة والضوابط الأمنية مع أدلة وقرارات معلقة.",
+      "next": [
+        "accessibility-audit",
+        "performance-audit",
+        "verify",
+        "code-review",
+        "handoff",
+        "privacy-review"
+      ],
+      "workflows": [
+        "new-feature",
+        "bugfix",
+        "architecture-change",
+        "new-project",
+        "security-change",
+        "implement-approved-spec",
+        "large-initiative",
+        "security-audit",
+        "release-review"
+      ]
+    },
+    "seo-guardian": {
+      "path": "skills/seo-guardian/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Preserve search indexing invariants",
+      "summary_ar": "حماية ثوابت فهرسة البحث",
+      "when_en": "When the task requires preserve search indexing invariants.",
+      "when_ar": "عندما تتطلب المهمة حماية ثوابت فهرسة البحث.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for preserve search indexing invariants, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص حماية ثوابت فهرسة البحث مع أدلة وقرارات معلقة.",
+      "next": [
+        "technical-seo",
+        "accessibility-audit"
+      ],
+      "workflows": [
+        "seo-review"
+      ]
+    },
+    "setup-pre-commit": {
+      "path": "skills/setup-pre-commit/SKILL.md",
+      "stage": "build",
+      "summary_en": "Configure pre-commit quality checks",
+      "summary_ar": "تهيئة فحوص الجودة قبل الالتزام",
+      "when_en": "When the task requires configure pre-commit quality checks.",
+      "when_ar": "عندما تتطلب المهمة تهيئة فحوص الجودة قبل الالتزام.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for configure pre-commit quality checks, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تهيئة فحوص الجودة قبل الالتزام مع أدلة وقرارات معلقة.",
+      "next": [
+        "verify",
+        "handoff"
+      ],
+      "workflows": []
+    },
+    "tdd": {
+      "path": "skills/tdd/SKILL.md",
+      "stage": "build",
+      "summary_en": "Practice test-driven development",
+      "summary_ar": "اتباع التطوير الموجّه بالاختبارات",
+      "when_en": "When the task requires practice test-driven development.",
+      "when_ar": "عندما تتطلب المهمة اتباع التطوير الموجّه بالاختبارات.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for practice test-driven development, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص اتباع التطوير الموجّه بالاختبارات مع أدلة وقرارات معلقة.",
+      "next": [
+        "implement",
+        "security-audit"
+      ],
+      "workflows": [
+        "bugfix"
+      ]
+    },
+    "teach": {
+      "path": "skills/teach/SKILL.md",
+      "stage": "deliver",
+      "summary_en": "Teach progressively with exercises",
+      "summary_ar": "التعليم التدريجي باستخدام التمارين",
+      "when_en": "When the task requires teach progressively with exercises.",
+      "when_ar": "عندما تتطلب المهمة التعليم التدريجي باستخدام التمارين.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for teach progressively with exercises, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص التعليم التدريجي باستخدام التمارين مع أدلة وقرارات معلقة.",
+      "next": [
+        "scaffold-exercises",
+        "verify"
+      ],
+      "workflows": []
+    },
+    "technical-seo": {
+      "path": "skills/technical-seo/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Review technical search visibility",
+      "summary_ar": "مراجعة ظهور الموقع تقنياً في البحث",
+      "when_en": "When the task requires review technical search visibility.",
+      "when_ar": "عندما تتطلب المهمة مراجعة ظهور الموقع تقنياً في البحث.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for review technical search visibility, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص مراجعة ظهور الموقع تقنياً في البحث مع أدلة وقرارات معلقة.",
+      "next": [
+        "paid-media-review",
+        "privacy-review",
+        "accessibility-audit",
+        "performance-audit"
+      ],
+      "workflows": [
+        "marketing-campaign",
+        "seo-review"
+      ]
+    },
+    "threat-model": {
+      "path": "skills/threat-model/SKILL.md",
+      "stage": "design",
+      "summary_en": "Model threats and trust boundaries",
+      "summary_ar": "نمذجة التهديدات وحدود الثقة",
+      "when_en": "When the task requires model threats and trust boundaries.",
+      "when_ar": "عندما تتطلب المهمة نمذجة التهديدات وحدود الثقة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for model threats and trust boundaries, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص نمذجة التهديدات وحدود الثقة مع أدلة وقرارات معلقة.",
+      "next": [
+        "review-design",
+        "resolve-findings",
+        "privacy-review",
+        "secrets-safety",
+        "dependency-audit"
+      ],
+      "workflows": [
+        "architecture-change",
+        "security-change",
+        "security-audit"
+      ]
+    },
+    "ticket-intake": {
+      "path": "skills/ticket-intake/SKILL.md",
+      "stage": "routing",
+      "summary_en": "Safely store external ticket text",
+      "summary_ar": "حفظ نصوص التذاكر الخارجية بأمان",
+      "when_en": "When the task requires safely store external ticket text.",
+      "when_ar": "عندما تتطلب المهمة حفظ نصوص التذاكر الخارجية بأمان.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for safely store external ticket text, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص حفظ نصوص التذاكر الخارجية بأمان مع أدلة وقرارات معلقة.",
+      "next": [
+        "ticket-triage"
+      ],
+      "workflows": [
+        "ticket-execution"
+      ]
+    },
+    "ticket-triage": {
+      "path": "skills/ticket-triage/SKILL.md",
+      "stage": "routing",
+      "summary_en": "Classify and route ticket work",
+      "summary_ar": "تصنيف وتوجيه مهام التذاكر",
+      "when_en": "When the task requires classify and route ticket work.",
+      "when_ar": "عندما تتطلب المهمة تصنيف وتوجيه مهام التذاكر.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for classify and route ticket work, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تصنيف وتوجيه مهام التذاكر مع أدلة وقرارات معلقة.",
+      "next": [],
+      "workflows": [
+        "ticket-execution"
+      ]
+    },
+    "to-spec": {
+      "path": "skills/to-spec/SKILL.md",
+      "stage": "plan",
+      "summary_en": "Write implementation-ready specifications",
+      "summary_ar": "إعداد مواصفات جاهزة للتنفيذ",
+      "when_en": "When the task requires write implementation-ready specifications.",
+      "when_ar": "عندما تتطلب المهمة إعداد مواصفات جاهزة للتنفيذ.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for write implementation-ready specifications, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص إعداد مواصفات جاهزة للتنفيذ مع أدلة وقرارات معلقة.",
+      "next": [
+        "to-tickets",
+        "implement",
+        "doc-impact",
+        "security-audit"
+      ],
+      "workflows": [
+        "new-feature",
+        "architecture-change",
+        "new-project",
+        "security-change",
+        "large-initiative"
+      ]
+    },
+    "to-tickets": {
+      "path": "skills/to-tickets/SKILL.md",
+      "stage": "plan",
+      "summary_en": "Split work into independent tickets",
+      "summary_ar": "تقسيم العمل إلى تذاكر مستقلة",
+      "when_en": "When the task requires split work into independent tickets.",
+      "when_ar": "عندما تتطلب المهمة تقسيم العمل إلى تذاكر مستقلة.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for split work into independent tickets, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص تقسيم العمل إلى تذاكر مستقلة مع أدلة وقرارات معلقة.",
+      "next": [
+        "implement",
+        "security-audit"
+      ],
+      "workflows": [
+        "new-feature",
+        "architecture-change",
+        "new-project",
+        "implement-approved-spec",
+        "large-initiative"
+      ]
+    },
+    "verify": {
+      "path": "skills/verify/SKILL.md",
+      "stage": "verify",
+      "summary_en": "Collect real verification evidence",
+      "summary_ar": "جمع أدلة تحقق حقيقية",
+      "when_en": "When the task requires collect real verification evidence.",
+      "when_ar": "عندما تتطلب المهمة جمع أدلة تحقق حقيقية.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for collect real verification evidence, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص جمع أدلة تحقق حقيقية مع أدلة وقرارات معلقة.",
+      "next": [
+        "code-review",
+        "detect-drift",
+        "decision-capture",
+        "handoff"
+      ],
+      "workflows": [
+        "new-feature",
+        "bugfix",
+        "architecture-change",
+        "new-project",
+        "refactor",
+        "security-change",
+        "docs-only",
+        "implement-approved-spec",
+        "large-initiative",
+        "marketing-campaign",
+        "seo-review",
+        "security-audit",
+        "release-review"
+      ]
+    },
+    "workflow-router": {
+      "path": "skills/workflow-router/SKILL.md",
+      "stage": "routing",
+      "summary_en": "Choose the smallest safe workflow",
+      "summary_ar": "اختيار أصغر مسار عمل آمن",
+      "when_en": "When the task requires choose the smallest safe workflow.",
+      "when_ar": "عندما تتطلب المهمة اختيار أصغر مسار عمل آمن.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for choose the smallest safe workflow, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص اختيار أصغر مسار عمل آمن مع أدلة وقرارات معلقة.",
+      "next": [],
+      "workflows": []
+    },
+    "writing-great-skills": {
+      "path": "skills/writing-great-skills/SKILL.md",
+      "stage": "design",
+      "summary_en": "Author reusable agent skills",
+      "summary_ar": "كتابة مهارات وكلاء قابلة لإعادة الاستخدام",
+      "when_en": "When the task requires author reusable agent skills.",
+      "when_ar": "عندما تتطلب المهمة كتابة مهارات وكلاء قابلة لإعادة الاستخدام.",
+      "inputs_en": "Task request, approved project context, constraints and relevant evidence.",
+      "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
+      "outputs_en": "A verifiable result for author reusable agent skills, with evidence and open decisions.",
+      "outputs_ar": "نتيجة قابلة للتحقق تخص كتابة مهارات وكلاء قابلة لإعادة الاستخدام مع أدلة وقرارات معلقة.",
+      "next": [
+        "verify",
+        "handoff"
+      ],
+      "workflows": []
+    }
+  },
+  "workflows": {
+    "new-feature": {
+      "route": "NEW_FEATURE",
+      "description": "workflows/new-feature.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "grill",
+          "optional": false
+        },
+        {
+          "skill": "domain-modeling",
+          "optional": true
+        },
+        {
+          "skill": "feature-design",
+          "optional": false
+        },
+        {
+          "skill": "architecture-decision",
+          "optional": true
+        },
+        {
+          "skill": "review-design",
+          "optional": true
+        },
+        {
+          "skill": "resolve-findings",
+          "optional": true
+        },
+        {
+          "skill": "doc-impact",
+          "optional": false
+        },
+        {
+          "skill": "to-spec",
+          "optional": false
+        },
+        {
+          "skill": "to-tickets",
+          "optional": true
+        },
+        {
+          "skill": "implement",
+          "optional": false
+        },
+        {
+          "skill": "security-audit",
+          "optional": true
+        },
+        {
+          "skill": "accessibility-audit",
+          "optional": true
+        },
+        {
+          "skill": "performance-audit",
+          "optional": true
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "detect-drift",
+          "optional": true
+        },
+        {
+          "skill": "decision-capture",
+          "optional": true
+        },
+        {
+          "skill": "doc-sync",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "bugfix": {
+      "route": "BUGFIX",
+      "description": "workflows/bugfix.md",
+      "risk": "low",
+      "steps": [
+        {
+          "skill": "diagnose-bug",
+          "optional": false
+        },
+        {
+          "skill": "tdd",
+          "optional": true
+        },
+        {
+          "skill": "implement",
+          "optional": false
+        },
+        {
+          "skill": "security-audit",
+          "optional": true
+        },
+        {
+          "skill": "accessibility-audit",
+          "optional": true
+        },
+        {
+          "skill": "performance-audit",
+          "optional": true
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "decision-capture",
+          "optional": true
+        },
+        {
+          "skill": "doc-sync",
+          "optional": true
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "architecture-change": {
+      "route": "ARCHITECTURE_CHANGE",
+      "description": "workflows/architecture-change.md",
+      "risk": "high",
+      "steps": [
+        {
+          "skill": "grill",
+          "optional": false
+        },
+        {
+          "skill": "architecture-decision",
+          "optional": false
+        },
+        {
+          "skill": "threat-model",
+          "optional": true
+        },
+        {
+          "skill": "review-design",
+          "optional": true
+        },
+        {
+          "skill": "resolve-findings",
+          "optional": true
+        },
+        {
+          "skill": "doc-impact",
+          "optional": false
+        },
+        {
+          "skill": "to-spec",
+          "optional": false
+        },
+        {
+          "skill": "to-tickets",
+          "optional": true
+        },
+        {
+          "skill": "implement",
+          "optional": false
+        },
+        {
+          "skill": "security-audit",
+          "optional": true
+        },
+        {
+          "skill": "accessibility-audit",
+          "optional": true
+        },
+        {
+          "skill": "performance-audit",
+          "optional": true
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "detect-drift",
+          "optional": true
+        },
+        {
+          "skill": "decision-capture",
+          "optional": false
+        },
+        {
+          "skill": "doc-sync",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "new-project": {
+      "route": "NEW_PROJECT",
+      "description": "workflows/new-project.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "project-bootstrap",
+          "optional": false
+        },
+        {
+          "skill": "project-discovery",
+          "optional": false
+        },
+        {
+          "skill": "domain-modeling",
+          "optional": true
+        },
+        {
+          "skill": "architecture-decision",
+          "optional": true
+        },
+        {
+          "skill": "review-design",
+          "optional": true
+        },
+        {
+          "skill": "resolve-findings",
+          "optional": true
+        },
+        {
+          "skill": "to-spec",
+          "optional": false
+        },
+        {
+          "skill": "doc-impact",
+          "optional": false
+        },
+        {
+          "skill": "to-tickets",
+          "optional": true
+        },
+        {
+          "skill": "implement",
+          "optional": false
+        },
+        {
+          "skill": "security-audit",
+          "optional": true
+        },
+        {
+          "skill": "accessibility-audit",
+          "optional": true
+        },
+        {
+          "skill": "performance-audit",
+          "optional": true
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "decision-capture",
+          "optional": true
+        },
+        {
+          "skill": "doc-sync",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "legacy-project": {
+      "route": "LEGACY_ONBOARDING",
+      "description": "workflows/legacy-project.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "legacy-onboarding",
+          "optional": false
+        },
+        {
+          "skill": "project-audit",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "review-only": {
+      "route": "REVIEW_ONLY",
+      "description": "workflows/review-only.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "code-review",
+          "optional": false
+        }
+      ]
+    },
+    "project-audit": {
+      "route": "PROJECT_AUDIT",
+      "description": "workflows/existing-project.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "project-audit",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "refactor": {
+      "route": "REFACTOR",
+      "description": "workflows/refactor.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "architecture-decision",
+          "optional": true
+        },
+        {
+          "skill": "doc-impact",
+          "optional": true
+        },
+        {
+          "skill": "implement",
+          "optional": false
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "decision-capture",
+          "optional": true
+        },
+        {
+          "skill": "doc-sync",
+          "optional": true
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "security-change": {
+      "route": "SECURITY_CHANGE",
+      "description": "workflows/security-change.md",
+      "risk": "high",
+      "steps": [
+        {
+          "skill": "grill",
+          "optional": false
+        },
+        {
+          "skill": "architecture-decision",
+          "optional": true
+        },
+        {
+          "skill": "threat-model",
+          "optional": false
+        },
+        {
+          "skill": "privacy-review",
+          "optional": true
+        },
+        {
+          "skill": "secrets-safety",
+          "optional": true
+        },
+        {
+          "skill": "review-design",
+          "optional": true
+        },
+        {
+          "skill": "resolve-findings",
+          "optional": true
+        },
+        {
+          "skill": "doc-impact",
+          "optional": false
+        },
+        {
+          "skill": "to-spec",
+          "optional": false
+        },
+        {
+          "skill": "implement",
+          "optional": false
+        },
+        {
+          "skill": "security-audit",
+          "optional": false
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "decision-capture",
+          "optional": true
+        },
+        {
+          "skill": "doc-sync",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "docs-only": {
+      "route": "DOCS_ONLY",
+      "description": "workflows/docs-only.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "doc-impact",
+          "optional": false
+        },
+        {
+          "skill": "doc-sync",
+          "optional": false
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "implement-approved-spec": {
+      "route": "IMPLEMENT_APPROVED_SPEC",
+      "description": "workflows/implement-approved-spec.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "doc-impact",
+          "optional": false
+        },
+        {
+          "skill": "to-tickets",
+          "optional": true
+        },
+        {
+          "skill": "implement",
+          "optional": false
+        },
+        {
+          "skill": "security-audit",
+          "optional": true
+        },
+        {
+          "skill": "accessibility-audit",
+          "optional": true
+        },
+        {
+          "skill": "performance-audit",
+          "optional": true
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "decision-capture",
+          "optional": true
+        },
+        {
+          "skill": "doc-sync",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "large-initiative": {
+      "route": "LARGE_INITIATIVE",
+      "description": "workflows/large-initiative.md",
+      "risk": "high",
+      "steps": [
+        {
+          "skill": "project-discovery",
+          "optional": true
+        },
+        {
+          "skill": "grill",
+          "optional": false
+        },
+        {
+          "skill": "map-initiative",
+          "optional": false
+        },
+        {
+          "skill": "domain-modeling",
+          "optional": true
+        },
+        {
+          "skill": "feature-design",
+          "optional": false
+        },
+        {
+          "skill": "architecture-decision",
+          "optional": true
+        },
+        {
+          "skill": "review-design",
+          "optional": true
+        },
+        {
+          "skill": "resolve-findings",
+          "optional": true
+        },
+        {
+          "skill": "doc-impact",
+          "optional": false
+        },
+        {
+          "skill": "to-spec",
+          "optional": false
+        },
+        {
+          "skill": "to-tickets",
+          "optional": false
+        },
+        {
+          "skill": "implement",
+          "optional": false
+        },
+        {
+          "skill": "security-audit",
+          "optional": true
+        },
+        {
+          "skill": "accessibility-audit",
+          "optional": true
+        },
+        {
+          "skill": "performance-audit",
+          "optional": true
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "detect-drift",
+          "optional": true
+        },
+        {
+          "skill": "decision-capture",
+          "optional": true
+        },
+        {
+          "skill": "doc-sync",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "ticket-execution": {
+      "route": "TICKET_EXECUTION",
+      "description": "workflows/ticket-execution.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "ticket-intake",
+          "optional": false
+        },
+        {
+          "skill": "ticket-triage",
+          "optional": false
+        }
+      ]
+    },
+    "marketing-campaign": {
+      "route": "MARKETING_CAMPAIGN",
+      "description": "workflows/marketing-campaign.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "marketing-strategy",
+          "optional": false
+        },
+        {
+          "skill": "campaign-planning",
+          "optional": false
+        },
+        {
+          "skill": "content-marketing",
+          "optional": true
+        },
+        {
+          "skill": "landing-page-optimization",
+          "optional": true
+        },
+        {
+          "skill": "technical-seo",
+          "optional": true
+        },
+        {
+          "skill": "paid-media-review",
+          "optional": true
+        },
+        {
+          "skill": "privacy-review",
+          "optional": true
+        },
+        {
+          "skill": "analytics-attribution",
+          "optional": true
+        },
+        {
+          "skill": "crm-lifecycle",
+          "optional": true
+        },
+        {
+          "skill": "growth-experimentation",
+          "optional": true
+        },
+        {
+          "skill": "implement",
+          "optional": true
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "code-review",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "seo-review": {
+      "route": "SEO_REVIEW",
+      "description": "workflows/seo-review.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "seo-guardian",
+          "optional": false
+        },
+        {
+          "skill": "technical-seo",
+          "optional": false
+        },
+        {
+          "skill": "accessibility-audit",
+          "optional": true
+        },
+        {
+          "skill": "performance-audit",
+          "optional": true
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "security-audit": {
+      "route": "SECURITY_AUDIT",
+      "description": "workflows/security-audit.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "threat-model",
+          "optional": true
+        },
+        {
+          "skill": "secrets-safety",
+          "optional": true
+        },
+        {
+          "skill": "dependency-audit",
+          "optional": true
+        },
+        {
+          "skill": "privacy-review",
+          "optional": true
+        },
+        {
+          "skill": "security-audit",
+          "optional": false
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    },
+    "release-review": {
+      "route": "RELEASE_REVIEW",
+      "description": "workflows/release-review.md",
+      "risk": "standard",
+      "steps": [
+        {
+          "skill": "release-readiness",
+          "optional": false
+        },
+        {
+          "skill": "security-audit",
+          "optional": true
+        },
+        {
+          "skill": "privacy-review",
+          "optional": true
+        },
+        {
+          "skill": "performance-audit",
+          "optional": true
+        },
+        {
+          "skill": "verify",
+          "optional": false
+        },
+        {
+          "skill": "handoff",
+          "optional": false
+        }
+      ]
+    }
+  },
+  "conditions": {
+    "tdd": [
+      "useful_deterministic_regression_seam"
+    ],
+    "project-discovery": [
+      "product_purpose_or_scope_unclear"
+    ],
+    "doc-impact": [
+      "permanent_project_truth_may_change"
+    ],
+    "to-tickets": [
+      "user_requested_ticketing",
+      "task_size == large",
+      "task_size == initiative",
+      "independent_delivery_units > 1"
+    ],
+    "domain-modeling": [
+      "domain_terms_or_entities_change"
+    ],
+    "architecture-decision": [
+      "material_architecture_choice"
+    ],
+    "decision-capture": [
+      "durable_decision_emerged"
+    ],
+    "doc-sync": [
+      "permanent_project_truth_changed"
+    ],
+    "implement": [
+      "explicit_implementation_requested_and_authorized"
+    ],
+    "security-audit": [
+      "security_risk_or_security_review_explicit"
+    ],
+    "threat-model": [
+      "new_trust_boundary_or_critical_security_design"
+    ],
+    "secrets-safety": [
+      "secrets_or_environment_credentials_affected"
+    ],
+    "dependency-audit": [
+      "dependencies_or_supply_chain_affected"
+    ],
+    "privacy-review": [
+      "personal_data_tracking_or_consent_affected"
+    ],
+    "technical-seo": [
+      "public_indexable_landing_page_or_SEO_scope"
+    ],
+    "accessibility-audit": [
+      "UI_interaction_or_accessibility_scope"
+    ],
+    "performance-audit": [
+      "performance_budget_or_load_affected"
+    ],
+    "content-marketing": [
+      "content_or_campaign_copy_needed"
+    ],
+    "landing-page-optimization": [
+      "landing_page_in_scope"
+    ],
+    "paid-media-review": [
+      "paid_media_campaign_or_account_changes"
+    ],
+    "analytics-attribution": [
+      "tracking_or_lead_to_revenue_attribution_needed"
+    ],
+    "crm-lifecycle": [
+      "lead_nurture_or_CRM_hand_off"
+    ],
+    "growth-experimentation": [
+      "experiment_requested"
+    ],
+    "review-design": [
+      "high_impact_design",
+      "architecture_risk",
+      "explicit_independent_review"
+    ],
+    "resolve-findings": [
+      "review_findings_to_resolve"
+    ],
+    "detect-drift": [
+      "spec_and_implementation_exist"
+    ]
+  }
+}
