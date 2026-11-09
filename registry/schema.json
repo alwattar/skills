@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "Unified Skills Registry",
+  "required": [
+    "schema_version",
+    "name",
+    "skills",
+    "workflows",
+    "conditions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "skills": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "path",
+          "stage",
+          "summary_en",
+          "summary_ar",
+          "when_en",
+          "when_ar",
+          "next",
+          "workflows"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string"
+          },
+          "summary_en": {
+            "type": "string",
+            "minLength": 4
+          },
+          "summary_ar": {
+            "type": "string",
+            "minLength": 4
+          },
+          "when_en": {
+            "type": "string"
+          },
+          "when_ar": {
+            "type": "string"
+          },
+          "next": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "workflows": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "workflows": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "route",
+          "description",
+          "steps"
+        ],
+        "properties": {
+          "route": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "skill",
+                "optional"
+              ],
+              "properties": {
+                "skill": {
+                  "type": "string"
+                },
+                "optional": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "conditions": {
+      "type": "object"
+    }
+  }
+}

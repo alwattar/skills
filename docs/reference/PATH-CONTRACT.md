@@ -1,19 +1,15 @@
-# Workflow Path Contract
+# Unified Path Contract
 
-These paths are canonical and repository-root-relative:
+Canonical paths relative to the installed project's root:
+- Skills: `skills/<name>/SKILL.md`
+- One registry: `registry/registry.yaml` (JSON syntax, valid YAML)
+- Workflows: `workflows/<name>.md`
+- Review personas: `reviewers/<name>.md`
+- Policies: `policies/<name>.md`
+- Templates: `templates/<name>.md`
+- Runtime tools: `tools/`
+- Project profile: `workflow.config.yaml`
+- Source documentation: `README.en.md` and `README.ar.md`
+- User data and project artifacts: remain in the *consumer project*, not the reusable skills repository.
 
-- Skills: `.agents/skills/<skill-name>/SKILL.md`
-- Workflow registry: `.agents/workflow/WORKFLOW-REGISTRY.yaml`
-- Shared rules: `.agents/workflow/rules/`
-- Workflow descriptions: `.agents/workflow/workflows/`
-- Templates: `.agents/workflow/templates/`
-- Adapters: `.agents/workflow/adapters/`
-
-Do not resolve these paths relative to the currently loaded `SKILL.md`.
-Resolve them from the repository root.
-
-There is intentionally only one workflow/skill registry:
-`.agents/workflow/WORKFLOW-REGISTRY.yaml`.
-
-Repository profile: `workflow.config.yaml`. Route sequences and conditional-step policies belong only to the registry. Workflow descriptions explain prerequisites/gates and link to the registry rather than maintaining a second sequence.
-Artifact locations: `specs/`, `tickets/`, `docs/adrs/`, `docs/engineering/`; create on use.
+Skill relationships, optional steps and workflow ordering are owned only by `registry/registry.yaml`. Do not duplicate the graph in multiple sources. Keep per-skill guides generated from the registry; preserve project AGENTS.md and owner approvals.
