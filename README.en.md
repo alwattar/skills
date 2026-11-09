@@ -5,6 +5,7 @@ An integrated, model-agnostic engineering and delivery system. Skills, workflows
 ## Start here
 
 - [Complete skills catalog](docs/SKILLS.en.md): 59 skills, each with purpose, usage, inputs, outputs and recommended next skills.
+- [Codex and Claude Code setup](docs/AGENTS.en.md): project-local and user-wide skill discovery.
 - [Architecture](docs/ARCHITECTURE.en.md): directory responsibilities, routing, review isolation and policy precedence.
 - [Workflow guides](docs/WORKFLOWS.en.md): 17 routes and their ordered stages.
 - [Contributing and naming conventions](docs/CONTRIBUTING.en.md).

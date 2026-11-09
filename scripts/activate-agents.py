@@ -28,15 +28,15 @@ def main() -> int:
             raise ValueError("Project target must exist")
         source = (ROOT if args.scope == "user" else target) / "skills"
         registry_file = (ROOT if args.scope == "user" else target) / "registry/registry.yaml"
-        if not registry_file.is_file() or not source.is_dir():
+        if not registry_file.is_file() or not source.is_dir() or source.is_symlink():
             raise ValueError("Install the unified skills first, or use user scope from a checked-out source repository")
         entries = json.loads(registry_file.read_text(encoding="utf-8"))["skills"]
         root = Path.home() if args.scope == "user" else target
         plan = []
         for host in sorted(set(args.host)):
             directory = root / DISCOVERY[host]
-            if directory.is_symlink():
-                raise ValueError(f"Refusing symlinked skill discovery directory: {directory}")
+            if directory.is_symlink() or directory.parent.is_symlink():
+                raise ValueError(f"Refusing symlinked skill discovery directory or ancestor: {directory}")
             for name in entries:
                 src = source / name
                 if not src.is_dir() or not (src / "SKILL.md").is_file() or src.is_symlink():
