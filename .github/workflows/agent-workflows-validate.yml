@@ -1,27 +1,39 @@
-name: Portable Agent Workflows
+name: Unified Agent Skills
+
 on:
   pull_request:
     paths:
-      - "packs/agent-workflows/**"
-      - "scripts/install-agent-workflows.py"
-      - "scripts/validate-agent-workflows.py"
-      - "tests/test_agent_workflows.py"
+      - "skills/**"
+      - "workflows/**"
+      - "registry/**"
+      - "reviewers/**"
+      - "policies/**"
+      - "templates/**"
+      - "adapters/**"
+      - "tools/**"
+      - "scripts/**"
+      - "tests/**"
+      - "docs/**"
+      - "README*"
       - ".github/workflows/agent-workflows-validate.yml"
   push:
-    branches: ["feat/portable-agent-workflows"]
-    paths:
-      - "packs/agent-workflows/**"
-      - "scripts/**"
-      - "tests/test_agent_workflows.py"
+    branches: ["feat/unified-skills-architecture", "feat/portable-agent-workflows", "main"]
+
+permissions:
+  contents: read
+
 jobs:
   validate:
+    name: Registry, bilingual docs, installer and routing
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python3 scripts/validate-agent-workflows.py
-      - run: python3 -m unittest discover -s tests -p 'test_agent_workflows.py' -v
+      - name: Validate registry and ordering
+        run: python3 scripts/validate-skills.py
+      - name: Validate bilingual guides
+        run: python3 scripts/generate-docs.py --check
+      - name: Run regression tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
