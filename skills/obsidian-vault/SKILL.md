@@ -1,59 +1,24 @@
 ---
 name: obsidian-vault
-description: Search, create, and manage notes in the Obsidian vault with wikilinks and index notes. Use when user wants to find, create, or organize notes in Obsidian.
+description: Safely search, link and organize a user-specified Obsidian knowledge vault.
 ---
 
 # Obsidian Vault
 
-## Vault location
+## Select the vault
 
-`/mnt/d/Obsidian Vault/AI Research/`
+Use an explicit vault path provided by the user, or a project-owned configuration value such as `knowledge.vault_path` in `workflow.config.yaml`. Do **not** assume a developer's absolute disk path or search the user's home directory to discover private notes.
 
-Mostly flat at root level.
+If the vault path is missing, request it before reading or writing vault files. The user's vault content may be private; never ingest an entire vault without a scoped reason.
 
-## Naming conventions
+## Read and organize
 
-- **Index notes**: aggregate related topics (e.g., `Ralph Wiggum Index.md`, `Skills Index.md`, `RAG Index.md`)
-- **Title case** for all note names
-- No folders for organization - use links and index notes instead
+- Search only the authorized path and requested notes using filenames or bounded content queries.
+- Preserve Obsidian `[[wikilinks]]` and existing note naming conventions; do not assume all vaults are flat or use Title Case.
+- Suggest index notes and backlinks when they materially improve navigation.
+- For creating or editing notes, preserve unrelated data, use previews when appropriate, and respect the requested scope.
+- Identify link collisions, duplicate titles and broken references without inventing files.
+- Never sync a vault to a remote provider or public repository without explicit permission.
 
-## Linking
-
-- Use Obsidian `[[wikilinks]]` syntax: `[[Note Title]]`
-- Notes link to dependencies/related notes at the bottom
-- Index notes are just lists of `[[wikilinks]]`
-
-## Workflows
-
-### Search for notes
-
-```bash
-# Search by filename
-find "/mnt/d/Obsidian Vault/AI Research/" -name "*.md" | grep -i "keyword"
-
-# Search by content
-grep -rl "keyword" "/mnt/d/Obsidian Vault/AI Research/" --include="*.md"
-```
-
-Or use Grep/Glob tools directly on the vault path.
-
-### Create a new note
-
-1. Use **Title Case** for filename
-2. Write content as a unit of learning (per vault rules)
-3. Add `[[wikilinks]]` to related notes at the bottom
-4. If part of a numbered sequence, use the hierarchical numbering scheme
-
-### Find related notes
-
-Search for `[[Note Title]]` across the vault to find backlinks:
-
-```bash
-grep -rl "\\[\\[Note Title\\]\\]" "/mnt/d/Obsidian Vault/AI Research/"
-```
-
-### Find index notes
-
-```bash
-find "/mnt/d/Obsidian Vault/AI Research/" -name "*Index*"
-```
+**Output:** note references, proposed/verified edits and links.
+**Next:** `doc-sync` for recorded organizational decisions, or `verify` for link integrity.

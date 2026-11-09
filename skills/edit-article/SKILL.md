@@ -1,15 +1,18 @@
 ---
 name: edit-article
-description: Edit and improve articles by restructuring sections, improving clarity, and tightening prose. Use when user wants to edit, revise, or improve an article draft.
+description: Edit and improve articles while preserving the author's intent and audience.
 disable-model-invocation: true
 ---
 
-1. First, divide the article into sections based on its headings. Think about the main points you want to make during those sections.
+# Edit Article
 
-Consider that information is a directed acyclic graph, and that pieces of information can depend on other pieces of information. Make sure that the order of the sections and their contents respects these dependencies.
+Use for existing articles and drafts when the author requests editing, rewriting or restructuring.
 
-Confirm the sections with the user.
+1. Read the whole draft; identify audience, objective, voice, non-negotiable facts and requested degree of editing.
+2. Check whether the sections and dependency order make sense. For a small or well-scoped edit, do not pause for unnecessary approval. For a substantial structural rewrite, propose a concise outline when the author has not already settled it.
+3. Improve clarity, flow, accuracy of wording, terminology and consistency. Preserve quotations and provided facts; mark unverified claims instead of inventing evidence.
+4. Respect the target publication's style and language. Do not enforce arbitrary paragraph character limits or replace the author's tone without a request.
+5. Show the revised article and briefly note material changes, omissions or facts requiring confirmation.
 
-2. For each section:
-
-2a. Rewrite the section to improve clarity, coherence, and flow. Use maximum 240 characters per paragraph.
+**Output:** a usable edited article, with uncertainty disclosed.
+**Next:** `verify` when factual checks are required, then `handoff`.
