@@ -1,0 +1,18 @@
+# Project-owned settings: created once and never replaced by skill updates.
+version: 1
+profile: standard
+router: workflow-router
+project:
+  documentation_language: en
+  test_command: null
+  architecture_docs: docs
+approvals:
+  production_mutation: explicit
+  security_or_financial_decisions: explicit
+privacy:
+  never_ingest_secrets: true
+review:
+  independent_review: auto_if_fresh_context_supported
+  never_claim_unrun_reviews: true
+verification:
+  require_observed_evidence: true
