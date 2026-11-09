@@ -1,5 +1,5 @@
 # Workflow — New Feature
 
-The canonical sequence is in `.agents/workflow/WORKFLOW-REGISTRY.yaml`; do not maintain a duplicate sequence here.
+The canonical sequence is in `registry/registry.yaml`; do not maintain a duplicate sequence here.
 
 Read approved scope and relevant invariants. Verify and review the final change before handoff.
