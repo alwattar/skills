@@ -1,18 +1,17 @@
-# Model-invoked vs user-invoked
+# Skill invocation and routing
 
-Every `SKILL.md` in this repo is a skill. The one axis that splits them is **invocation** — who can reach it:
+All active skills use `skills/<name>/SKILL.md` and a shared [registry](../registry/registry.yaml).
 
-- **User-invoked** — reachable **only by the human typing its name**. Set `disable-model-invocation: true` in the frontmatter. The `description` is **human-facing**: a one-line summary read by a person browsing slash-commands. Strip trigger lists ("Use when the user says…").
-- **Model-invoked** — reachable by **model or user**. The default: omit `disable-model-invocation`. The `description` is **model-facing** and keeps rich trigger phrasing ("Use when the user wants…, mentions…, asks for…") so auto-invocation fires. The test for whether a skill should stay model-invoked: _could the model usefully reach for this autonomously?_ (Reuse is the reason to extract a skill, not the test.)
+## User-invoked and model-invoked
 
-Because a user-invoked skill has no description, nothing but the human can reach it — no other skill can fire it. So a user-invoked skill may invoke model-invoked skills, but it can never reach another user-invoked skill.
+- User-invoked skills set `disable-model-invocation: true` and require a direct user request in supporting hosts.
+- Model-invoked skills omit that field and can be selected by an authorized agent.
+- The registry chooses the smallest workflow matching intent and safety gates. A slash-command does not bypass approval or privacy checks.
 
-Bucket `README.md`s and the top-level `README.md` group entries into **User-invoked** and **Model-invoked**.
+## Relationships
 
-## Dependencies between them
+The registry is the single source of truth for stages, optional conditions, route order, and recommended follow-up skills. A skill's bilingual README explains how to use it and which related skills may follow.
 
-Dependencies are expressed as **`/skill`-style prose invocation** ("Run the `/grilling` skill"), not deep `../other-skill/FILE.md` cross-references. Shared reference docs live inside the skill that owns them; other skills reach that material by invoking the skill, not by linking across folders.
+## Scope
 
-## Passive vs active domain work
-
-Merely _reading_ `CONTEXT.md` for vocabulary is a one-line prose pointer, not the `domain-modeling` skill. Only the active build/sharpen discipline (challenge terms, edge-case scenarios, write ADRs, update `CONTEXT.md` inline) is `domain-modeling`.
+Skills do not automatically install external packages or grant deployment, financial or credential access. Source attributions are recorded under `docs/SOURCES.md`, not represented as separately installed runtime packs.
