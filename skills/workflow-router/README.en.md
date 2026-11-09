@@ -25,7 +25,9 @@ A verifiable result for choose the smallest safe workflow, with evidence and ope
 
 ## Recommended next skills
 
-- [`handoff`](../handoff/README.en.md) — when reporting results; Document evidence and next actions.
+- [`project-discovery`](../project-discovery/README.en.md) — Discover product scope and users.
+- [`ticket-intake`](../ticket-intake/README.en.md) — Safely store external ticket text.
+- [`grill`](../grill/README.en.md) — Resolve ambiguity through focused questions.
 
 These are recommendations, not an automatic permission to proceed. The [canonical workflow registry](../../registry/registry.yaml) chooses the actual sequence and optional conditions.
 

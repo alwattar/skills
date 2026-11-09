@@ -25,7 +25,9 @@ A verifiable result for classify and route ticket work, with evidence and open d
 
 ## Recommended next skills
 
-- [`handoff`](../handoff/README.en.md) — when reporting results; Document evidence and next actions.
+- [`workflow-router`](../workflow-router/README.en.md) — Choose the smallest safe workflow.
+- [`feature-design`](../feature-design/README.en.md) — Design product and system features.
+- [`diagnose-bug`](../diagnose-bug/README.en.md) — Reproduce and diagnose bugs.
 
 These are recommendations, not an automatic permission to proceed. The [canonical workflow registry](../../registry/registry.yaml) chooses the actual sequence and optional conditions.
 

@@ -25,7 +25,9 @@ A verifiable result for organize incident response safely, with evidence and ope
 
 ## Recommended next skills
 
-- [`handoff`](../handoff/README.en.md) — when reporting results; Document evidence and next actions.
+- [`security-audit`](../security-audit/README.en.md) — Audit security evidence and controls.
+- [`verify`](../verify/README.en.md) — Collect real verification evidence.
+- [`handoff`](../handoff/README.en.md) — Document evidence and next actions.
 
 These are recommendations, not an automatic permission to proceed. The [canonical workflow registry](../../registry/registry.yaml) chooses the actual sequence and optional conditions.
 

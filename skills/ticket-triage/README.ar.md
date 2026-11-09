@@ -25,7 +25,9 @@
 
 ## المهارات المقترحة بعد هذه المهارة
 
-- [`handoff`](../handoff/README.ar.md) — لتسليم نتائج العمل؛ توثيق الأدلة والخطوات التالية.
+- [`workflow-router`](../workflow-router/README.ar.md) — اختيار أصغر مسار عمل آمن.
+- [`feature-design`](../feature-design/README.ar.md) — تصميم ميزات المنتج والنظام.
+- [`diagnose-bug`](../diagnose-bug/README.ar.md) — إعادة إنتاج الأخطاء وتشخيصها.
 
 هذه توصيات وليست تفويضاً تلقائياً. يحدد [السجل المركزي](../../registry/registry.yaml) الترتيب النهائي وشروط الخطوات الاختيارية.
 

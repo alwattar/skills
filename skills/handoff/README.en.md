@@ -25,7 +25,8 @@ A verifiable result for document evidence and next actions, with evidence and op
 
 ## Recommended next skills
 
-- [`handoff`](../handoff/README.en.md) — when reporting results; Document evidence and next actions.
+- [`choose-workflow`](../choose-workflow/README.en.md) — Help select the right skill or workflow.
+- [`detect-drift`](../detect-drift/README.en.md) — Compare implemented code with approved design.
 
 These are recommendations, not an automatic permission to proceed. The [canonical workflow registry](../../registry/registry.yaml) chooses the actual sequence and optional conditions.
 

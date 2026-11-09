@@ -25,7 +25,9 @@ A verifiable result for review api interfaces and compatibility, with evidence a
 
 ## Recommended next skills
 
-- [`handoff`](../handoff/README.en.md) — when reporting results; Document evidence and next actions.
+- [`review-design`](../review-design/README.en.md) — Review design through independent critical perspectives.
+- [`to-spec`](../to-spec/README.en.md) — Write implementation-ready specifications.
+- [`verify`](../verify/README.en.md) — Collect real verification evidence.
 
 These are recommendations, not an automatic permission to proceed. The [canonical workflow registry](../../registry/registry.yaml) chooses the actual sequence and optional conditions.
 

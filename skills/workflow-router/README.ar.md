@@ -25,7 +25,9 @@
 
 ## المهارات المقترحة بعد هذه المهارة
 
-- [`handoff`](../handoff/README.ar.md) — لتسليم نتائج العمل؛ توثيق الأدلة والخطوات التالية.
+- [`project-discovery`](../project-discovery/README.ar.md) — استكشاف نطاق المنتج ومستخدميه.
+- [`ticket-intake`](../ticket-intake/README.ar.md) — حفظ نصوص التذاكر الخارجية بأمان.
+- [`grill`](../grill/README.ar.md) — حل الغموض عبر أسئلة مركزة.
 
 هذه توصيات وليست تفويضاً تلقائياً. يحدد [السجل المركزي](../../registry/registry.yaml) الترتيب النهائي وشروط الخطوات الاختيارية.
 

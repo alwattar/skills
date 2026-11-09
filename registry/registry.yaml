@@ -57,7 +57,11 @@
       "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
       "outputs_en": "A verifiable result for review api interfaces and compatibility, with evidence and open decisions.",
       "outputs_ar": "نتيجة قابلة للتحقق تخص مراجعة عقود API والتوافق مع أدلة وقرارات معلقة.",
-      "next": [],
+      "next": [
+        "review-design",
+        "to-spec",
+        "verify"
+      ],
       "workflows": []
     },
     "architecture-decision": {
@@ -484,7 +488,10 @@
       "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
       "outputs_en": "A verifiable result for document evidence and next actions, with evidence and open decisions.",
       "outputs_ar": "نتيجة قابلة للتحقق تخص توثيق الأدلة والخطوات التالية مع أدلة وقرارات معلقة.",
-      "next": [],
+      "next": [
+        "choose-workflow",
+        "detect-drift"
+      ],
       "workflows": [
         "new-feature",
         "bugfix",
@@ -560,7 +567,11 @@
       "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
       "outputs_en": "A verifiable result for organize incident response safely, with evidence and open decisions.",
       "outputs_ar": "نتيجة قابلة للتحقق تخص تنظيم الاستجابة الآمنة للحوادث مع أدلة وقرارات معلقة.",
-      "next": [],
+      "next": [
+        "security-audit",
+        "verify",
+        "handoff"
+      ],
       "workflows": []
     },
     "landing-page-optimization": {
@@ -1123,7 +1134,11 @@
       "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
       "outputs_en": "A verifiable result for classify and route ticket work, with evidence and open decisions.",
       "outputs_ar": "نتيجة قابلة للتحقق تخص تصنيف وتوجيه مهام التذاكر مع أدلة وقرارات معلقة.",
-      "next": [],
+      "next": [
+        "workflow-router",
+        "feature-design",
+        "diagnose-bug"
+      ],
       "workflows": [
         "ticket-execution"
       ]
@@ -1220,7 +1235,11 @@
       "inputs_ar": "الطلب وسياق المشروع المعتمد والقيود والأدلة ذات الصلة.",
       "outputs_en": "A verifiable result for choose the smallest safe workflow, with evidence and open decisions.",
       "outputs_ar": "نتيجة قابلة للتحقق تخص اختيار أصغر مسار عمل آمن مع أدلة وقرارات معلقة.",
-      "next": [],
+      "next": [
+        "project-discovery",
+        "ticket-intake",
+        "grill"
+      ],
       "workflows": []
     },
     "writing-great-skills": {
