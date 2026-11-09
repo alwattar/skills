@@ -17,12 +17,12 @@ Rules:
 6. Re-route if later evidence changes the task class.
 7. Treat changes to trust boundaries, authentication, isolation, secrets, privacy, integrity or retention as SECURITY_CHANGE or ARCHITECTURE_CHANGE.
 8. Resolve the route to its registered sequence and description; evaluate optional steps against registry conditions. Read `workflow.config.yaml` for the repository profile.
-9. Read the canonical registry at `.agents/workflow/WORKFLOW-REGISTRY.yaml` from the repository root.
+9. Read the canonical registry at `registry/registry.yaml` from the repository root.
 
 
 ## Documentation language
 
-Before creating or updating any repository engineering artifact, follow `.agents/workflow/rules/documentation-language.md`.
+Before creating or updating any repository engineering artifact, follow `policies/documentation-language.md`.
 
 Default to English for agent-authored engineering artifacts unless the consuming project's approved language policy says otherwise. Always preserve pasted ticket source text verbatim, regardless of language.
 
@@ -30,7 +30,7 @@ Do not apply this rule to localization files or explicitly requested translation
 
 ## Interactive decision protocol
 
-Whenever this skill needs an owner decision, follow `.agents/workflow/rules/interactive-decisions.md`.
+Whenever this skill needs an owner decision, follow `policies/interactive-decisions.md`.
 
 - Prefer structured single-select/multi-select only if the host exposes such an interaction.
 - Otherwise render equivalent A/B/C text options.
