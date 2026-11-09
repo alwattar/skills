@@ -9,7 +9,7 @@ Show source→doc mapping, gaps and conflicts, then stop for owner approval befo
 
 ## Documentation language
 
-Before creating or updating any repository engineering artifact, follow `.agents/workflow/rules/documentation-language.md`.
+Before creating or updating any repository engineering artifact, follow `policies/documentation-language.md`.
 
 Follow the consuming project's approved documentation language (English by default). Preserve externally pasted ticket source text verbatim.
 
@@ -17,7 +17,7 @@ Do not apply this rule to localization files or explicitly requested translation
 
 ## Interactive decision protocol
 
-Whenever this skill needs an owner decision, follow `.agents/workflow/rules/interactive-decisions.md`.
+Whenever this skill needs an owner decision, follow `policies/interactive-decisions.md`.
 
 - Prefer structured single-select/multi-select only if the host exposes such an interaction.
 - Otherwise render equivalent A/B/C text options.
