@@ -10,7 +10,7 @@ Exit when implementation is ready for verification.
 
 ## Documentation language
 
-Before creating or updating any repository engineering artifact, follow `.agents/workflow/rules/documentation-language.md`.
+Before creating or updating any repository engineering artifact, follow `policies/documentation-language.md`.
 
 Follow the consuming project's approved documentation language (English by default). Preserve externally pasted ticket source text verbatim.
 

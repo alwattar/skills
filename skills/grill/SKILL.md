@@ -10,7 +10,7 @@ Exit when material requirements are explicit.
 
 ## Interactive decision protocol
 
-Whenever this skill needs an owner decision, follow `.agents/workflow/rules/interactive-decisions.md`.
+Whenever this skill needs an owner decision, follow `policies/interactive-decisions.md`.
 
 - Prefer structured single-select/multi-select only if the host exposes such an interaction.
 - Otherwise render equivalent A/B/C text options.
