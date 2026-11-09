@@ -30,7 +30,7 @@ C. Other — describe your scope
 Recommendation: A, based on the supplied first-slice brief.
 ```
 
-For multiple selections, state that multiple answers are allowed and use the project roles or evidence categories. See `.agents/workflow/INTERACTION-EXAMPLES.md`.
+For multiple selections, state that multiple answers are allowed and use the project roles or evidence categories. See `docs/reference/INTERACTION-EXAMPLES.md`.
 
 ## Quality of options
 
@@ -100,4 +100,4 @@ The user must always be able to provide an answer outside the proposed options.
 
 Choice prompts should use the user's conversation language.
 
-Repository artifacts produced from those choices remain subject to `.agents/workflow/rules/documentation-language.md`.
+Repository artifacts produced from those choices remain subject to `policies/documentation-language.md`.
