@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-REPO="$(cd "$(dirname "$0")/.." && pwd)"
-
-cd "$REPO"
-find . -name SKILL.md -not -path '*/node_modules/*' | sed 's|^\./||' | sort
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+python3 - "$ROOT/registry/registry.yaml" <<'PY'
+import json, sys
+with open(sys.argv[1], encoding="utf-8") as handle:
+    skills = json.load(handle)["skills"]
+for name, meta in skills.items():
+    print(name + " — " + meta["summary_en"])
+PY
