@@ -12,6 +12,6 @@ The user may communicate in any language. Conversation language must not change 
 
 Localization files and explicitly requested translation artifacts are exceptions.
 
-Canonical policy: `.agents/workflow/rules/documentation-language.md`.
+Canonical policy: `policies/documentation-language.md`.
 
 Map security requirements to SECURITY.md and route security-impacting work explicitly. Preserve existing owner authorization and unresolved material-decision gates.
