@@ -10,6 +10,9 @@ An integrated, model-agnostic engineering and delivery system. Skills, workflows
 - [Contributing and naming conventions](docs/CONTRIBUTING.en.md).
 - [Arabic full guide](README.ar.md).
 
+
+- [Migrating projects from the previous layout](docs/MIGRATION.en.md).
+
 ## Who should use it?
 
 Developers and teams working with Codex, Claude Code, Antigravity or other agents capable of reading Agent Skills. A project might use one skill directly or route a complete task from discovery through handoff.
